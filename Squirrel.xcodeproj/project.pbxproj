@@ -20,6 +20,66 @@
 		441E637E22B7E96F006DCCDD /* stroke.schema.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E636B22B7E90D006DCCDD /* stroke.schema.yaml */; };
 		441E637F22B7E96F006DCCDD /* terra_pinyin.dict.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E636422B7E90C006DCCDD /* terra_pinyin.dict.yaml */; };
 		441E638022B7E96F006DCCDD /* terra_pinyin.schema.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E636522B7E90C006DCCDD /* terra_pinyin.schema.yaml */; };
+441E638122B7E96F006DCCDD /* build: in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E638222B7E90C006DCCDD /* build: */; };
+441E6319722B7E96F006DCCDD /* opencc: in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6319822B7E90C006DCCDD /* opencc: */; };
+441E6319522B7E96F006DCCDD /* terra_pinyin.table.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6319622B7E90C006DCCDD /* terra_pinyin.table.bin */; };
+441E6319322B7E96F006DCCDD /* terra_pinyin.reverse.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6319422B7E90C006DCCDD /* terra_pinyin.reverse.bin */; };
+441E6319122B7E96F006DCCDD /* terra_pinyin.prism.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6319222B7E90C006DCCDD /* terra_pinyin.prism.bin */; };
+441E6318922B7E96F006DCCDD /* stroke.table.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6319022B7E90C006DCCDD /* stroke.table.bin */; };
+441E6318722B7E96F006DCCDD /* stroke.reverse.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6318822B7E90C006DCCDD /* stroke.reverse.bin */; };
+441E6318522B7E96F006DCCDD /* stroke.prism.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6318622B7E90C006DCCDD /* stroke.prism.bin */; };
+441E6318322B7E96F006DCCDD /* luna_quanpin.prism.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6318422B7E90C006DCCDD /* luna_quanpin.prism.bin */; };
+441E6318122B7E96F006DCCDD /* luna_pinyin.table.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6318222B7E90C006DCCDD /* luna_pinyin.table.bin */; };
+441E6317922B7E96F006DCCDD /* luna_pinyin.reverse.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6318022B7E90C006DCCDD /* luna_pinyin.reverse.bin */; };
+441E6317722B7E96F006DCCDD /* luna_pinyin.prism.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6317822B7E90C006DCCDD /* luna_pinyin.prism.bin */; };
+441E6317522B7E96F006DCCDD /* luna_pinyin_simp.prism.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6317622B7E90C006DCCDD /* luna_pinyin_simp.prism.bin */; };
+441E6317322B7E96F006DCCDD /* cangjie5.table.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6317422B7E90C006DCCDD /* cangjie5.table.bin */; };
+441E6317122B7E96F006DCCDD /* cangjie5.reverse.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6317222B7E90C006DCCDD /* cangjie5.reverse.bin */; };
+441E6316922B7E96F006DCCDD /* cangjie5.prism.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6317022B7E90C006DCCDD /* cangjie5.prism.bin */; };
+441E6316722B7E96F006DCCDD /* bopomofo.prism.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6316822B7E90C006DCCDD /* bopomofo.prism.bin */; };
+441E6316522B7E96F006DCCDD /* bopomofo_tw.prism.bin in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6316622B7E90C006DCCDD /* bopomofo_tw.prism.bin */; };
+441E6316122B7E96F006DCCDD /* v_filter.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6316222B7E90C006DCCDD /* v_filter.lua */; };
+441E6315922B7E96F006DCCDD /* uuid.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6316022B7E90C006DCCDD /* uuid.lua */; };
+441E6315722B7E96F006DCCDD /* user.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6315822B7E90C006DCCDD /* user.yaml */; };
+441E6315522B7E96F006DCCDD /* unicode.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6315622B7E90C006DCCDD /* unicode.lua */; };
+441E6315322B7E96F006DCCDD /* tencent.dict.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6315422B7E90C006DCCDD /* tencent.dict.yaml */; };
+441E6315122B7E96F006DCCDD /* t9_preedit.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6315222B7E90C006DCCDD /* t9_preedit.lua */; };
+441E6314922B7E96F006DCCDD /* select_character.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6315022B7E90C006DCCDD /* select_character.lua */; };
+441E6314722B7E96F006DCCDD /* search.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6314822B7E90C006DCCDD /* search.lua */; };
+441E6314522B7E96F006DCCDD /* rime.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6314622B7E90C006DCCDD /* rime.lua */; };
+441E6314322B7E96F006DCCDD /* rime_ice.schema.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6314422B7E90C006DCCDD /* rime_ice.schema.yaml */; };
+441E6314122B7E96F006DCCDD /* rime_ice.dict.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6314222B7E90C006DCCDD /* rime_ice.dict.yaml */; };
+441E6313922B7E96F006DCCDD /* reduce_english_filter.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6314022B7E90C006DCCDD /* reduce_english_filter.lua */; };
+441E6313722B7E96F006DCCDD /* radical_pinyin.schema.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6313822B7E90C006DCCDD /* radical_pinyin.schema.yaml */; };
+441E6313522B7E96F006DCCDD /* radical_pinyin.dict.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6313622B7E90C006DCCDD /* radical_pinyin.dict.yaml */; };
+441E6313322B7E96F006DCCDD /* pin_cand_filter.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6313422B7E90C006DCCDD /* pin_cand_filter.lua */; };
+441E6313122B7E96F006DCCDD /* others.txt in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6313222B7E90C006DCCDD /* others.txt */; };
+441E6312922B7E96F006DCCDD /* others.dict.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6313022B7E90C006DCCDD /* others.dict.yaml */; };
+441E6312722B7E96F006DCCDD /* number_translator.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6312822B7E90C006DCCDD /* number_translator.lua */; };
+441E6312522B7E96F006DCCDD /* melt_eng.schema.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6312622B7E90C006DCCDD /* melt_eng.schema.yaml */; };
+441E6312322B7E96F006DCCDD /* melt_eng.dict.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6312422B7E90C006DCCDD /* melt_eng.dict.yaml */; };
+441E6312122B7E96F006DCCDD /* lunar.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6312222B7E90C006DCCDD /* lunar.lua */; };
+441E6311922B7E96F006DCCDD /* long_word_filter.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6312022B7E90C006DCCDD /* long_word_filter.lua */; };
+441E6311722B7E96F006DCCDD /* is_in_user_dict.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6311822B7E90C006DCCDD /* is_in_user_dict.lua */; };
+441E6311522B7E96F006DCCDD /* installation.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6311622B7E90C006DCCDD /* installation.yaml */; };
+441E6311322B7E96F006DCCDD /* force_gc.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6311422B7E90C006DCCDD /* force_gc.lua */; };
+441E6311122B7E96F006DCCDD /* ext.dict.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6311222B7E90C006DCCDD /* ext.dict.yaml */; };
+441E6310922B7E96F006DCCDD /* en.dict.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6311022B7E90C006DCCDD /* en.dict.yaml */; };
+441E6310722B7E96F006DCCDD /* en_spacer.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6310822B7E90C006DCCDD /* en_spacer.lua */; };
+441E6310522B7E96F006DCCDD /* en_ext.dict.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6310622B7E90C006DCCDD /* en_ext.dict.yaml */; };
+441E6310322B7E96F006DCCDD /* emoji.txt in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6310422B7E90C006DCCDD /* emoji.txt */; };
+441E6310122B7E96F006DCCDD /* emoji.json in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6310222B7E90C006DCCDD /* emoji.json */; };
+441E639922B7E96F006DCCDD /* debuger.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6310022B7E90C006DCCDD /* debuger.lua */; };
+441E639722B7E96F006DCCDD /* date_translator.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E639822B7E90C006DCCDD /* date_translator.lua */; };
+441E639522B7E96F006DCCDD /* corrector.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E639622B7E90C006DCCDD /* corrector.lua */; };
+441E639322B7E96F006DCCDD /* cn_en.txt in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E639422B7E90C006DCCDD /* cn_en.txt */; };
+441E639122B7E96F006DCCDD /* cn_en_spacer.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E639222B7E90C006DCCDD /* cn_en_spacer.lua */; };
+441E638922B7E96F006DCCDD /* calc_translator.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E639022B7E90C006DCCDD /* calc_translator.lua */; };
+441E638722B7E96F006DCCDD /* base.dict.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E638822B7E90C006DCCDD /* base.dict.yaml */; };
+441E638522B7E96F006DCCDD /* autocap_filter.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E638622B7E90C006DCCDD /* autocap_filter.lua */; };
+441E638322B7E96F006DCCDD /* ai_completion.lua in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E638422B7E90C006DCCDD /* ai_completion.lua */; };
+441E638122B7E96F006DCCDD /* 8105.dict.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E638222B7E90C006DCCDD /* 8105.dict.yaml */; };
+441E638122B7E96F006DCCDD /* terra_pinyin_12345.schema.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E638222B7E90C006DCCDD /* terra_pinyin_12345.schema.yaml */; };
 		442B5B881570C37200370DEA /* squirrel.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 442B5B871570C37200370DEA /* squirrel.yaml */; };
 		442C64921F7A410A0027EFBE /* rime-install in CopyFiles */ = {isa = PBXBuildFile; fileRef = 442C64901F7A404A0027EFBE /* rime-install */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		446C01D71F767BD400A6C23E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 446C01D61F767BD400A6C23E /* Assets.xcassets */; };
@@ -159,6 +219,66 @@
 				441E637E22B7E96F006DCCDD /* stroke.schema.yaml in Copy Shared Support Files */,
 				441E637F22B7E96F006DCCDD /* terra_pinyin.dict.yaml in Copy Shared Support Files */,
 				441E638022B7E96F006DCCDD /* terra_pinyin.schema.yaml in Copy Shared Support Files */,
+441E638122B7E96F006DCCDD /* build: in Copy Shared Support Files */,
+441E6319722B7E96F006DCCDD /* opencc: in Copy Shared Support Files */,
+441E6319522B7E96F006DCCDD /* terra_pinyin.table.bin in Copy Shared Support Files */,
+441E6319322B7E96F006DCCDD /* terra_pinyin.reverse.bin in Copy Shared Support Files */,
+441E6319122B7E96F006DCCDD /* terra_pinyin.prism.bin in Copy Shared Support Files */,
+441E6318922B7E96F006DCCDD /* stroke.table.bin in Copy Shared Support Files */,
+441E6318722B7E96F006DCCDD /* stroke.reverse.bin in Copy Shared Support Files */,
+441E6318522B7E96F006DCCDD /* stroke.prism.bin in Copy Shared Support Files */,
+441E6318322B7E96F006DCCDD /* luna_quanpin.prism.bin in Copy Shared Support Files */,
+441E6318122B7E96F006DCCDD /* luna_pinyin.table.bin in Copy Shared Support Files */,
+441E6317922B7E96F006DCCDD /* luna_pinyin.reverse.bin in Copy Shared Support Files */,
+441E6317722B7E96F006DCCDD /* luna_pinyin.prism.bin in Copy Shared Support Files */,
+441E6317522B7E96F006DCCDD /* luna_pinyin_simp.prism.bin in Copy Shared Support Files */,
+441E6317322B7E96F006DCCDD /* cangjie5.table.bin in Copy Shared Support Files */,
+441E6317122B7E96F006DCCDD /* cangjie5.reverse.bin in Copy Shared Support Files */,
+441E6316922B7E96F006DCCDD /* cangjie5.prism.bin in Copy Shared Support Files */,
+441E6316722B7E96F006DCCDD /* bopomofo.prism.bin in Copy Shared Support Files */,
+				441E6316522B7E96F006DCCDD /* bopomofo_tw.prism.bin in Copy Shared Support Files */,
+				441E6316122B7E96F006DCCDD /* v_filter.lua in Copy Shared Support Files */,
+441E6315922B7E96F006DCCDD /* uuid.lua in Copy Shared Support Files */,
+441E6315722B7E96F006DCCDD /* user.yaml in Copy Shared Support Files */,
+441E6315522B7E96F006DCCDD /* unicode.lua in Copy Shared Support Files */,
+441E6315322B7E96F006DCCDD /* tencent.dict.yaml in Copy Shared Support Files */,
+441E6315122B7E96F006DCCDD /* t9_preedit.lua in Copy Shared Support Files */,
+441E6314922B7E96F006DCCDD /* select_character.lua in Copy Shared Support Files */,
+441E6314722B7E96F006DCCDD /* search.lua in Copy Shared Support Files */,
+441E6314522B7E96F006DCCDD /* rime.lua in Copy Shared Support Files */,
+441E6314322B7E96F006DCCDD /* rime_ice.schema.yaml in Copy Shared Support Files */,
+441E6314122B7E96F006DCCDD /* rime_ice.dict.yaml in Copy Shared Support Files */,
+441E6313922B7E96F006DCCDD /* reduce_english_filter.lua in Copy Shared Support Files */,
+441E6313722B7E96F006DCCDD /* radical_pinyin.schema.yaml in Copy Shared Support Files */,
+441E6313522B7E96F006DCCDD /* radical_pinyin.dict.yaml in Copy Shared Support Files */,
+441E6313322B7E96F006DCCDD /* pin_cand_filter.lua in Copy Shared Support Files */,
+441E6313122B7E96F006DCCDD /* others.txt in Copy Shared Support Files */,
+441E6312922B7E96F006DCCDD /* others.dict.yaml in Copy Shared Support Files */,
+441E6312722B7E96F006DCCDD /* number_translator.lua in Copy Shared Support Files */,
+441E6312522B7E96F006DCCDD /* melt_eng.schema.yaml in Copy Shared Support Files */,
+441E6312322B7E96F006DCCDD /* melt_eng.dict.yaml in Copy Shared Support Files */,
+441E6312122B7E96F006DCCDD /* lunar.lua in Copy Shared Support Files */,
+441E6311922B7E96F006DCCDD /* long_word_filter.lua in Copy Shared Support Files */,
+441E6311722B7E96F006DCCDD /* is_in_user_dict.lua in Copy Shared Support Files */,
+441E6311522B7E96F006DCCDD /* installation.yaml in Copy Shared Support Files */,
+441E6311322B7E96F006DCCDD /* force_gc.lua in Copy Shared Support Files */,
+441E6311122B7E96F006DCCDD /* ext.dict.yaml in Copy Shared Support Files */,
+441E6310922B7E96F006DCCDD /* en.dict.yaml in Copy Shared Support Files */,
+441E6310722B7E96F006DCCDD /* en_spacer.lua in Copy Shared Support Files */,
+441E6310522B7E96F006DCCDD /* en_ext.dict.yaml in Copy Shared Support Files */,
+441E6310322B7E96F006DCCDD /* emoji.txt in Copy Shared Support Files */,
+441E6310122B7E96F006DCCDD /* emoji.json in Copy Shared Support Files */,
+441E639922B7E96F006DCCDD /* debuger.lua in Copy Shared Support Files */,
+441E639722B7E96F006DCCDD /* date_translator.lua in Copy Shared Support Files */,
+441E639522B7E96F006DCCDD /* corrector.lua in Copy Shared Support Files */,
+441E639322B7E96F006DCCDD /* cn_en.txt in Copy Shared Support Files */,
+441E639122B7E96F006DCCDD /* cn_en_spacer.lua in Copy Shared Support Files */,
+441E638922B7E96F006DCCDD /* calc_translator.lua in Copy Shared Support Files */,
+441E638722B7E96F006DCCDD /* base.dict.yaml in Copy Shared Support Files */,
+441E638522B7E96F006DCCDD /* autocap_filter.lua in Copy Shared Support Files */,
+441E638322B7E96F006DCCDD /* ai_completion.lua in Copy Shared Support Files */,
+441E638122B7E96F006DCCDD /* 8105.dict.yaml in Copy Shared Support Files */,
+441E638122B7E96F006DCCDD /* terra_pinyin_12345.schema.yaml in Copy Shared Support Files */,
 				44AEBC7521F569FD00344375 /* key_bindings.yaml in Copy Shared Support Files */,
 				44AEBC7621F569FD00344375 /* punctuation.yaml in Copy Shared Support Files */,
 				7B5488AF1D2DACDF0056A1BE /* default.yaml in Copy Shared Support Files */,
@@ -211,6 +331,66 @@
 		441E636322B7E90C006DCCDD /* cangjie5.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cangjie5.schema.yaml; path = data/plum/cangjie5.schema.yaml; sourceTree = "<group>"; };
 		441E636422B7E90C006DCCDD /* terra_pinyin.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = terra_pinyin.dict.yaml; path = data/plum/terra_pinyin.dict.yaml; sourceTree = "<group>"; };
 		441E636522B7E90C006DCCDD /* terra_pinyin.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = terra_pinyin.schema.yaml; path = data/plum/terra_pinyin.schema.yaml; sourceTree = "<group>"; };
+441E638222B7E90C006DCCDD /* build: */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = build:; path = data/plum/build:; sourceTree = "<group>"; };
+		441E6319822B7E90C006DCCDD /* opencc: */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = opencc:; path = data/opencc; sourceTree = "<group>"; };
+441E6319622B7E90C006DCCDD /* terra_pinyin.table.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = terra_pinyin.table.bin; path = data/plum/terra_pinyin.table.bin; sourceTree = "<group>"; };
+441E6319422B7E90C006DCCDD /* terra_pinyin.reverse.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = terra_pinyin.reverse.bin; path = data/plum/terra_pinyin.reverse.bin; sourceTree = "<group>"; };
+441E6319222B7E90C006DCCDD /* terra_pinyin.prism.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = terra_pinyin.prism.bin; path = data/plum/terra_pinyin.prism.bin; sourceTree = "<group>"; };
+441E6319022B7E90C006DCCDD /* stroke.table.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stroke.table.bin; path = data/plum/stroke.table.bin; sourceTree = "<group>"; };
+441E6318822B7E90C006DCCDD /* stroke.reverse.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stroke.reverse.bin; path = data/plum/stroke.reverse.bin; sourceTree = "<group>"; };
+441E6318622B7E90C006DCCDD /* stroke.prism.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stroke.prism.bin; path = data/plum/stroke.prism.bin; sourceTree = "<group>"; };
+441E6318422B7E90C006DCCDD /* luna_quanpin.prism.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = luna_quanpin.prism.bin; path = data/plum/luna_quanpin.prism.bin; sourceTree = "<group>"; };
+441E6318222B7E90C006DCCDD /* luna_pinyin.table.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = luna_pinyin.table.bin; path = data/plum/luna_pinyin.table.bin; sourceTree = "<group>"; };
+441E6318022B7E90C006DCCDD /* luna_pinyin.reverse.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = luna_pinyin.reverse.bin; path = data/plum/luna_pinyin.reverse.bin; sourceTree = "<group>"; };
+441E6317822B7E90C006DCCDD /* luna_pinyin.prism.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = luna_pinyin.prism.bin; path = data/plum/luna_pinyin.prism.bin; sourceTree = "<group>"; };
+441E6317622B7E90C006DCCDD /* luna_pinyin_simp.prism.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = luna_pinyin_simp.prism.bin; path = data/plum/luna_pinyin_simp.prism.bin; sourceTree = "<group>"; };
+441E6317422B7E90C006DCCDD /* cangjie5.table.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cangjie5.table.bin; path = data/plum/cangjie5.table.bin; sourceTree = "<group>"; };
+441E6317222B7E90C006DCCDD /* cangjie5.reverse.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cangjie5.reverse.bin; path = data/plum/cangjie5.reverse.bin; sourceTree = "<group>"; };
+441E6317022B7E90C006DCCDD /* cangjie5.prism.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cangjie5.prism.bin; path = data/plum/cangjie5.prism.bin; sourceTree = "<group>"; };
+441E6316822B7E90C006DCCDD /* bopomofo.prism.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bopomofo.prism.bin; path = data/plum/bopomofo.prism.bin; sourceTree = "<group>"; };
+441E6316622B7E90C006DCCDD /* bopomofo_tw.prism.bin */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bopomofo_tw.prism.bin; path = data/plum/bopomofo_tw.prism.bin; sourceTree = "<group>"; };
+441E6316222B7E90C006DCCDD /* v_filter.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = v_filter.lua; path = data/plum/v_filter.lua; sourceTree = "<group>"; };
+441E6316022B7E90C006DCCDD /* uuid.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = uuid.lua; path = data/plum/uuid.lua; sourceTree = "<group>"; };
+441E6315822B7E90C006DCCDD /* user.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = user.yaml; path = data/plum/user.yaml; sourceTree = "<group>"; };
+441E6315622B7E90C006DCCDD /* unicode.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = unicode.lua; path = data/plum/unicode.lua; sourceTree = "<group>"; };
+441E6315422B7E90C006DCCDD /* tencent.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = tencent.dict.yaml; path = data/plum/tencent.dict.yaml; sourceTree = "<group>"; };
+441E6315222B7E90C006DCCDD /* t9_preedit.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = t9_preedit.lua; path = data/plum/t9_preedit.lua; sourceTree = "<group>"; };
+441E6315022B7E90C006DCCDD /* select_character.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = select_character.lua; path = data/plum/select_character.lua; sourceTree = "<group>"; };
+441E6314822B7E90C006DCCDD /* search.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = search.lua; path = data/plum/search.lua; sourceTree = "<group>"; };
+441E6314622B7E90C006DCCDD /* rime.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = rime.lua; path = data/plum/rime.lua; sourceTree = "<group>"; };
+441E6314422B7E90C006DCCDD /* rime_ice.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = rime_ice.schema.yaml; path = data/plum/rime_ice.schema.yaml; sourceTree = "<group>"; };
+441E6314222B7E90C006DCCDD /* rime_ice.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = rime_ice.dict.yaml; path = data/plum/rime_ice.dict.yaml; sourceTree = "<group>"; };
+441E6314022B7E90C006DCCDD /* reduce_english_filter.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = reduce_english_filter.lua; path = data/plum/reduce_english_filter.lua; sourceTree = "<group>"; };
+441E6313822B7E90C006DCCDD /* radical_pinyin.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = radical_pinyin.schema.yaml; path = data/plum/radical_pinyin.schema.yaml; sourceTree = "<group>"; };
+441E6313622B7E90C006DCCDD /* radical_pinyin.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = radical_pinyin.dict.yaml; path = data/plum/radical_pinyin.dict.yaml; sourceTree = "<group>"; };
+441E6313422B7E90C006DCCDD /* pin_cand_filter.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = pin_cand_filter.lua; path = data/plum/pin_cand_filter.lua; sourceTree = "<group>"; };
+441E6313222B7E90C006DCCDD /* others.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = others.txt; path = data/plum/others.txt; sourceTree = "<group>"; };
+441E6313022B7E90C006DCCDD /* others.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = others.dict.yaml; path = data/plum/others.dict.yaml; sourceTree = "<group>"; };
+441E6312822B7E90C006DCCDD /* number_translator.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = number_translator.lua; path = data/plum/number_translator.lua; sourceTree = "<group>"; };
+441E6312622B7E90C006DCCDD /* melt_eng.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = melt_eng.schema.yaml; path = data/plum/melt_eng.schema.yaml; sourceTree = "<group>"; };
+441E6312422B7E90C006DCCDD /* melt_eng.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = melt_eng.dict.yaml; path = data/plum/melt_eng.dict.yaml; sourceTree = "<group>"; };
+441E6312222B7E90C006DCCDD /* lunar.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = lunar.lua; path = data/plum/lunar.lua; sourceTree = "<group>"; };
+441E6312022B7E90C006DCCDD /* long_word_filter.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = long_word_filter.lua; path = data/plum/long_word_filter.lua; sourceTree = "<group>"; };
+441E6311822B7E90C006DCCDD /* is_in_user_dict.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = is_in_user_dict.lua; path = data/plum/is_in_user_dict.lua; sourceTree = "<group>"; };
+441E6311622B7E90C006DCCDD /* installation.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = installation.yaml; path = data/plum/installation.yaml; sourceTree = "<group>"; };
+441E6311422B7E90C006DCCDD /* force_gc.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = force_gc.lua; path = data/plum/force_gc.lua; sourceTree = "<group>"; };
+441E6311222B7E90C006DCCDD /* ext.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ext.dict.yaml; path = data/plum/ext.dict.yaml; sourceTree = "<group>"; };
+441E6311022B7E90C006DCCDD /* en.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = en.dict.yaml; path = data/plum/en.dict.yaml; sourceTree = "<group>"; };
+441E6310822B7E90C006DCCDD /* en_spacer.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = en_spacer.lua; path = data/plum/en_spacer.lua; sourceTree = "<group>"; };
+441E6310622B7E90C006DCCDD /* en_ext.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = en_ext.dict.yaml; path = data/plum/en_ext.dict.yaml; sourceTree = "<group>"; };
+441E6310422B7E90C006DCCDD /* emoji.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = emoji.txt; path = data/plum/emoji.txt; sourceTree = "<group>"; };
+441E6310222B7E90C006DCCDD /* emoji.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = emoji.json; path = data/plum/emoji.json; sourceTree = "<group>"; };
+441E6310022B7E90C006DCCDD /* debuger.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = debuger.lua; path = data/plum/debuger.lua; sourceTree = "<group>"; };
+441E639822B7E90C006DCCDD /* date_translator.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = date_translator.lua; path = data/plum/date_translator.lua; sourceTree = "<group>"; };
+441E639622B7E90C006DCCDD /* corrector.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = corrector.lua; path = data/plum/corrector.lua; sourceTree = "<group>"; };
+441E639422B7E90C006DCCDD /* cn_en.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cn_en.txt; path = data/plum/cn_en.txt; sourceTree = "<group>"; };
+441E639222B7E90C006DCCDD /* cn_en_spacer.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cn_en_spacer.lua; path = data/plum/cn_en_spacer.lua; sourceTree = "<group>"; };
+441E639022B7E90C006DCCDD /* calc_translator.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = calc_translator.lua; path = data/plum/calc_translator.lua; sourceTree = "<group>"; };
+441E638822B7E90C006DCCDD /* base.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = base.dict.yaml; path = data/plum/base.dict.yaml; sourceTree = "<group>"; };
+441E638622B7E90C006DCCDD /* autocap_filter.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = autocap_filter.lua; path = data/plum/autocap_filter.lua; sourceTree = "<group>"; };
+441E638422B7E90C006DCCDD /* ai_completion.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ai_completion.lua; path = data/plum/ai_completion.lua; sourceTree = "<group>"; };
+441E638222B7E90C006DCCDD /* 8105.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = 8105.dict.yaml; path = data/plum/8105.dict.yaml; sourceTree = "<group>"; };
+441E638222B7E90C006DCCDD /* terra_pinyin_12345.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = terra_pinyin_12345.schema.yaml; path = data/plum/terra_pinyin_12345.schema.yaml; sourceTree = "<group>"; };
 		441E636622B7E90C006DCCDD /* cangjie5_express.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cangjie5_express.schema.yaml; path = data/plum/cangjie5_express.schema.yaml; sourceTree = "<group>"; };
 		441E636722B7E90D006DCCDD /* bopomofo_tw.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bopomofo_tw.schema.yaml; path = data/plum/bopomofo_tw.schema.yaml; sourceTree = "<group>"; };
 		441E636822B7E90D006DCCDD /* bopomofo.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = bopomofo.schema.yaml; path = data/plum/bopomofo.schema.yaml; sourceTree = "<group>"; };
@@ -468,6 +648,66 @@
 				441E636B22B7E90D006DCCDD /* stroke.schema.yaml */,
 				441E636422B7E90C006DCCDD /* terra_pinyin.dict.yaml */,
 				441E636522B7E90C006DCCDD /* terra_pinyin.schema.yaml */,
+441E638222B7E90C006DCCDD /* build: */,
+441E6319822B7E90C006DCCDD /* opencc: */,
+441E6319622B7E90C006DCCDD /* terra_pinyin.table.bin */,
+441E6319422B7E90C006DCCDD /* terra_pinyin.reverse.bin */,
+441E6319222B7E90C006DCCDD /* terra_pinyin.prism.bin */,
+441E6319022B7E90C006DCCDD /* stroke.table.bin */,
+441E6318822B7E90C006DCCDD /* stroke.reverse.bin */,
+441E6318622B7E90C006DCCDD /* stroke.prism.bin */,
+441E6318422B7E90C006DCCDD /* luna_quanpin.prism.bin */,
+441E6318222B7E90C006DCCDD /* luna_pinyin.table.bin */,
+441E6318022B7E90C006DCCDD /* luna_pinyin.reverse.bin */,
+441E6317822B7E90C006DCCDD /* luna_pinyin.prism.bin */,
+441E6317622B7E90C006DCCDD /* luna_pinyin_simp.prism.bin */,
+441E6317422B7E90C006DCCDD /* cangjie5.table.bin */,
+441E6317222B7E90C006DCCDD /* cangjie5.reverse.bin */,
+441E6317022B7E90C006DCCDD /* cangjie5.prism.bin */,
+441E6316822B7E90C006DCCDD /* bopomofo.prism.bin */,
+441E6316622B7E90C006DCCDD /* bopomofo_tw.prism.bin */,
+441E6316222B7E90C006DCCDD /* v_filter.lua */,
+441E6316022B7E90C006DCCDD /* uuid.lua */,
+441E6315822B7E90C006DCCDD /* user.yaml */,
+441E6315622B7E90C006DCCDD /* unicode.lua */,
+441E6315422B7E90C006DCCDD /* tencent.dict.yaml */,
+441E6315222B7E90C006DCCDD /* t9_preedit.lua */,
+441E6315022B7E90C006DCCDD /* select_character.lua */,
+441E6314822B7E90C006DCCDD /* search.lua */,
+441E6314622B7E90C006DCCDD /* rime.lua */,
+441E6314422B7E90C006DCCDD /* rime_ice.schema.yaml */,
+441E6314222B7E90C006DCCDD /* rime_ice.dict.yaml */,
+441E6314022B7E90C006DCCDD /* reduce_english_filter.lua */,
+441E6313822B7E90C006DCCDD /* radical_pinyin.schema.yaml */,
+441E6313622B7E90C006DCCDD /* radical_pinyin.dict.yaml */,
+441E6313422B7E90C006DCCDD /* pin_cand_filter.lua */,
+441E6313222B7E90C006DCCDD /* others.txt */,
+441E6313022B7E90C006DCCDD /* others.dict.yaml */,
+441E6312822B7E90C006DCCDD /* number_translator.lua */,
+441E6312622B7E90C006DCCDD /* melt_eng.schema.yaml */,
+441E6312422B7E90C006DCCDD /* melt_eng.dict.yaml */,
+441E6312222B7E90C006DCCDD /* lunar.lua */,
+441E6312022B7E90C006DCCDD /* long_word_filter.lua */,
+441E6311822B7E90C006DCCDD /* is_in_user_dict.lua */,
+441E6311622B7E90C006DCCDD /* installation.yaml */,
+441E6311422B7E90C006DCCDD /* force_gc.lua */,
+441E6311222B7E90C006DCCDD /* ext.dict.yaml */,
+441E6311022B7E90C006DCCDD /* en.dict.yaml */,
+441E6310822B7E90C006DCCDD /* en_spacer.lua */,
+441E6310622B7E90C006DCCDD /* en_ext.dict.yaml */,
+441E6310422B7E90C006DCCDD /* emoji.txt */,
+441E6310222B7E90C006DCCDD /* emoji.json */,
+441E6310022B7E90C006DCCDD /* debuger.lua */,
+441E639822B7E90C006DCCDD /* date_translator.lua */,
+441E639622B7E90C006DCCDD /* corrector.lua */,
+441E639422B7E90C006DCCDD /* cn_en.txt */,
+441E639222B7E90C006DCCDD /* cn_en_spacer.lua */,
+441E639022B7E90C006DCCDD /* calc_translator.lua */,
+441E638822B7E90C006DCCDD /* base.dict.yaml */,
+441E638622B7E90C006DCCDD /* autocap_filter.lua */,
+441E638422B7E90C006DCCDD /* ai_completion.lua */,
+441E638222B7E90C006DCCDD /* 8105.dict.yaml */,
+441E638222B7E90C006DCCDD /* terra_pinyin_12345.schema.yaml */,
 				7B5488211D2DAAD10056A1BE /* default.yaml */,
 				7B5488291D2DAAD10056A1BE /* essay.txt */,
 				7B54882E1D2DAAD10056A1BE /* luna_pinyin_fluency.schema.yaml */,

@@ -2,7 +2,7 @@
 # encoding: utf-8
 #
 # AI 智能补全拼音输入方案
-# 基于明月拼音，集成 AI 补全功能
+# 基于雾凇拼音（rime-ice），集成 AI 补全功能
 
 schema:
   schema_id: ai_pinyin
@@ -11,10 +11,10 @@ schema:
   author:
     - AI Completion Team
   description: |
-    基于明月拼音的 AI 智能补全输入方案
+    基于雾凇拼音（rime-ice）的 AI 智能补全输入方案
     按 Tab 键触发 AI 补全
   dependencies:
-    - luna_pinyin
+    - rime_ice
 
 switches:
   - name: ascii_mode
@@ -52,9 +52,12 @@ engine:
   translators:
     - punct_translator
     - script_translator
+    - table_translator@melt_eng                # 英文输入（沿用 rime-ice）
     - lua_translator@ai_completion_translator  # AI 补全翻译器
   filters:
-    - lua_filter@ai_history_filter  # 历史记录捕获过滤器
+    - lua_filter@ai_history_filter              # 历史记录捕获过滤器
+    - lua_filter@*autocap_filter                # 英文自动大写（沿用 rime-ice）
+    - lua_filter@*reduce_english_filter         # 降低部分英文短词权重
     - simplifier
     - uniquifier
 
@@ -79,12 +82,48 @@ speller:
 
 # Translator 配置
 translator:
-  dictionary: luna_pinyin
+  dictionary: rime_ice
   prism: ai_pinyin
   preedit_format:
     - xform/([nl])v/$1ü/
     - xform/([nl])ue/$1üe/
     - xform/([jqxy])v/$1u/
+
+# 英文次翻译器（沿用雾凇拼音配置）
+melt_eng:
+  dictionary: melt_eng     # 挂载词库 melt_eng.dict.yaml
+  enable_sentence: false   # 禁止造句
+  enable_user_dict: false  # 禁用用户词典
+  initial_quality: 0.4     # 初始权重（显著低于中文，让中文优先）
+  comment_format:          # 自定义提示码
+    - xform/.*//           # 清空提示码
+
+# 降低部分英语单词在候选项的位置（配置与 rime_ice 保持一致）
+reduce_english_filter:
+  mode: all     # all | custom | none，使用内置短词集并合并 words
+  idx: 4        # 降低到第 idx 个位置（至少前 3 位优先给中文）
+  words: [
+    aid, ann,
+    bail, bait, bam, band, bans, bat, bay, bend, bent, benz, bib, bid, bien, biz, boc, bop, bos, bud, buf, bus, bach, bench, bush,
+    cab, cad, cain, cam, cans, cap, cef, chad, chan, chap, chef, cher, chew, chic, chin, chip, chit, coup, cum, cunt, cur, couch,
+    dab, dag, dal, dam, dent, dew, dial, diet, dim, din, dip, dis, dit, doug, dub, dug, dunn, don,
+    fab, fax, fob, fog, foul, fur,
+    gag, gail, gain, gal, gam, gaol, ged, gel, ger, guam, gus, gut,
+    hail, ham, hank, hans, hat, hay, heil, heir, hem, hep, hex, hud, hum, hung, hunk, hut, hush,
+    jim, jug,
+    kat,
+    lab, lad, lag, laid, lam, laos, lap, lat, lax, lay, led, leg, lex, liam, lib, lid, lied, lien, lies, linn, lip, lit, liz, lob, lug, lund, lung, lux, lash, loch, lush,
+    mag, maid, mann, mar, mat, med, mel, mend, mens, ment, mil, mins, mint, mob, moc, mop, mos, mot, mud, mug, mum, mesh,
+    nap, nat, nay, neil, nib, nip, noun, nous, nun, nut, nail, nash,
+    pac, paid, pail, pain, pair, pak, pal, pam, pans, pant, pap, par, pat, paw, pax, pens, pic, pier, pies, pins, pint, pit, pix, pod, pop, pos, pot, pour, pow, pub, pinch, pouch,
+    rand, rant, rent, rep, res, ret, rex, rib, rid, rig, rim, rub, rug, rum, runc, runs, ranch,
+    sac, sail, sal, sam, sans, sap, saw, sax, sew, sham, shaw, shin, sig, sin, sip, sis, suit, sung, suns, sup, sur, sus,
+    tad, tail, taj, tar, tax, tec, ted, tel, ter, tex, tic, tied, tier, ties, tim, tin, tit, tour, tout, tum,
+    wag, wand, womens, wap, wax, weir, won, went,
+    yan, yen,
+    zach,
+    my, mt, dj, as, js, cs, ak, ps, cd, cn, hk, bt, pk, ml
+  ]
 
 # AI 补全配置
 ai_completion:
@@ -126,9 +165,9 @@ recognizer:
     reverse_lookup: "`[a-z]*'?$"
     url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$|^[a-z]+[.].+$"
 
-# 标点符号
+# 标点符号：沿用雾凇拼音的默认设置
 punctuator:
-  import_preset: symbols
+  __include: default:/punctuator
 
 # Lua 扩展配置
 # 指定 Lua 脚本位置

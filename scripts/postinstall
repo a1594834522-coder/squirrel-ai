@@ -11,6 +11,35 @@ rime_shared_data_path="${squirrel_app_root}/Contents/SharedSupport"
 
 "${squirrel_executable}" --register-input-source
 
+# Install bundled Rime ICE Lua plugins, AI 脚本和 emoji opencc 数据
+user_home="/Users/${login_user}"
+user_rime_dir="${user_home}/Library/Rime"
+
+/usr/bin/sudo -u "${login_user}" /bin/mkdir -p "${user_rime_dir}/lua" "${user_rime_dir}/opencc"
+
+# Copy Lua plugins (skip rime.lua itself; do not overwrite existing user files)
+for lua_file in "${rime_shared_data_path}"/*.lua; do
+    if [ -f "${lua_file}" ]; then
+        lua_base="$(basename "${lua_file}")"
+        if [ "${lua_base}" = "rime.lua" ]; then
+            continue
+        fi
+        /usr/bin/sudo -u "${login_user}" /bin/cp -n "${lua_file}" "${user_rime_dir}/lua/" || true
+    fi
+done
+
+# Install AI 核心脚本 rime.lua 到用户根目录（仅在不存在时）
+if [ -f "${rime_shared_data_path}/rime.lua" ]; then
+    /usr/bin/sudo -u "${login_user}" /bin/cp -n "${rime_shared_data_path}/rime.lua" "${user_rime_dir}/rime.lua" || true
+fi
+
+# Copy emoji opencc configs (do not overwrite existing user files)
+for opencc_file in emoji.json emoji.txt others.txt; do
+    if [ -f "${rime_shared_data_path}/${opencc_file}" ]; then
+        /usr/bin/sudo -u "${login_user}" /bin/cp -n "${rime_shared_data_path}/${opencc_file}" "${user_rime_dir}/opencc/" || true
+    fi
+done
+
 if [ -z "${RIME_NO_PREBUILD}" ]; then
     pushd "${rime_shared_data_path}" > /dev/null
     "${squirrel_executable}" --build

@@ -3,5 +3,5 @@
 //  expose to Swift.
 //
 
-#import <rime_api_stdbool.h>
-#import <rime/key_table.h>
+#import "rime_api_stdbool.h"
+#import "rime/key_table.h"
