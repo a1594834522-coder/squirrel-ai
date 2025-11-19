@@ -31,7 +31,7 @@ ai_config = ai_config or {
     api_key = "",
     model_name = "gpt-4o-mini",
     -- Grok 配置（用于问题回答）
-    grok_base_url = "https://api.x.ai/v1/chat/completions",
+    grok_base_url = "https://api.x.ai/v1/responses",
     grok_api_key = "YOUR_GROK_API_KEY_HERE",
     grok_model_name = "grok-4-fast",
     max_candidates = 3,
@@ -77,48 +77,11 @@ local function json_escape(str)
     return str
 end
 
-local function should_normalize_base_url(url)
-    if not url then
-        return false
-    end
-    local host = url:match("^https?://([^/]+)")
-    if not host then
-        return false
-    end
-    host = host:lower()
-    return host == "api.openai.com" or host == "api.x.ai"
-end
-
-local function join_paths(base, suffix)
-    local has_slash_base = base:sub(-1) == "/"
-    local has_slash_suffix = suffix:sub(1, 1) == "/"
-    if has_slash_base and has_slash_suffix then
-        return base .. suffix:sub(2)
-    elseif not has_slash_base and not has_slash_suffix then
-        return base .. "/" .. suffix
-    end
-    return base .. suffix
-end
-
 local function normalize_base_url(url)
-    if not url or url == "" then
-        return url
+    if not url then
+        return ""
     end
-    local trimmed = url:gsub("^%s+", ""):gsub("%s+$", "")
-    local lower = trimmed:lower()
-    if lower:find("/chat/completions", 1, true) then
-        return trimmed
-    end
-    if not should_normalize_base_url(trimmed) then
-        return trimmed
-    end
-    if lower:match("/chat/?$") then
-        return join_paths(trimmed, "/completions")
-    end
-    if lower:match("/v1/?$") then
-        return join_paths(trimmed, "/chat/completions")
-    end
-    return join_paths(trimmed, "/v1/chat/completions")
+    return url:gsub("^%s+", ""):gsub("%s+$", "")
 end
 
 ai_config.base_url = normalize_base_url(ai_config.base_url)
@@ -133,6 +96,18 @@ local function is_gemini_provider()
         return true
     end
     return model:find("gemini", 1, true) ~= nil
+end
+
+local function is_grok_provider()
+    local base = (ai_config.base_url or ""):lower()
+    local model = (ai_config.model_name or ""):lower()
+    if base:find("api%.x%.ai", 1, true) ~= nil then
+        return true
+    end
+    if base:find("/responses", 1, true) ~= nil then
+        return true
+    end
+    return model:find("grok", 1, true) ~= nil
 end
 
 -- 获取当前时间戳（秒）
@@ -299,9 +274,28 @@ local function build_gemini_request_body(system_prompt, user_prompt, temperature
     }]], json_escape(combined), generation_config)
 end
 
+local function build_grok_request_body(system_prompt, user_prompt)
+    local segments = {}
+    if system_prompt and system_prompt ~= "" then
+        table.insert(segments, string.format('{"role": "system", "content": "%s"}', json_escape(system_prompt)))
+    end
+    table.insert(segments, string.format('{"role": "user", "content": "%s"}', json_escape(user_prompt or "")))
+
+    return string.format([[{
+        "model": "%s",
+        "input": [%s],
+        "tools": [
+            {"type": "web_search"}
+        ]
+    }]], ai_config.model_name, table.concat(segments, ","))
+end
+
 local function build_request_body(system_prompt, user_prompt, temperature, max_tokens)
     if is_gemini_provider() then
         return build_gemini_request_body(system_prompt, user_prompt, temperature, max_tokens)
+    end
+    if is_grok_provider() then
+        return build_grok_request_body(system_prompt, user_prompt)
     end
     return build_openai_request_body(system_prompt, user_prompt, temperature, max_tokens)
 end
@@ -463,11 +457,82 @@ local function parse_gemini_response(json_str)
     return content
 end
 
+local function parse_grok_response(json_str)
+    if not json_str or json_str == "" then
+        debug_log("ERROR: Empty JSON response")
+        return nil
+    end
+
+    local texts = {}
+    -- 优先解析新版 Grok 响应格式：content 数组中 type=output_text 的片段
+    for text in json_str:gmatch('"type"%s*:%s*"output_text"%s*,%s*"text"%s*:%s*"(.-)"') do
+        local cleaned = text:gsub('\\n', '\n')
+        cleaned = cleaned:gsub('\\r', '\r')
+        cleaned = cleaned:gsub('\\t', '\t')
+        cleaned = cleaned:gsub('\\"', '"')
+        cleaned = cleaned:gsub('\\\\', '\\')
+        cleaned = cleaned:gsub('^%s+', ''):gsub('%s+$', '')
+        if cleaned ~= "" then
+            table.insert(texts, cleaned)
+        end
+    end
+
+    -- 兼容旧版：顶层 output_text 数组
+    if #texts == 0 then
+        local output_section = json_str:match('"output_text"%s*:%s*%[(.-)%]')
+        if output_section then
+            for text in output_section:gmatch('"(.-)"') do
+                local cleaned = text:gsub('\\n', '\n')
+                cleaned = cleaned:gsub('\\r', '\r')
+                cleaned = cleaned:gsub('\\t', '\t')
+                cleaned = cleaned:gsub('\\"', '"')
+                cleaned = cleaned:gsub('\\\\', '\\')
+                cleaned = cleaned:gsub('^%s+', ''):gsub('%s+$', '')
+                if cleaned ~= "" then
+                    table.insert(texts, cleaned)
+                end
+            end
+        end
+    end
+
+    -- 兜底：直接从 output 数组中抓取 text 字段
+    if #texts == 0 then
+        local content_section = json_str:match('"output"%s*:%s*%[(.-)%]')
+        if content_section then
+            for part in content_section:gmatch('"text"%s*:%s*"(.-)"') do
+                local cleaned = part:gsub('\\n', '\n')
+                cleaned = cleaned:gsub('\\r', '\r')
+                cleaned = cleaned:gsub('\\t', '\t')
+                cleaned = cleaned:gsub('\\"', '"')
+                cleaned = cleaned:gsub('\\\\', '\\')
+                cleaned = cleaned:gsub('^%s+', ''):gsub('%s+$', '')
+                if cleaned ~= "" then
+                    table.insert(texts, cleaned)
+                end
+            end
+        end
+    end
+
+    if #texts == 0 then
+        debug_log("ERROR: Grok response has no text parts")
+        return nil
+    end
+
+    local content = table.concat(texts, "\n")
+    debug_log("Parsed Grok content length: " .. #content)
+    return content
+end
+
 local function parse_ai_response(json_str)
     if is_gemini_provider() then
         local gemini_content = parse_gemini_response(json_str)
         if gemini_content then
             return gemini_content
+        end
+    elseif is_grok_provider() then
+        local grok_content = parse_grok_response(json_str)
+        if grok_content then
+            return grok_content
         end
     end
     return parse_openai_response(json_str)
