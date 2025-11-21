@@ -1,0 +1,18 @@
+# Rime default settings customization
+# encoding: utf-8
+
+# 本文件用于启用 AI 拼音方案，并保留雾凇拼音的所有功能
+patch:
+  # 方案列表：添加 ai_pinyin 到雾凇拼音方案列表中
+  # 注意：对于列表类型，必须在定制文件中将整个列表替换
+  schema_list:
+    - schema: ai_pinyin              # AI拼音（智能补全）
+    - schema: rime_ice               # 雾凇拼音（全拼）
+    - schema: t9                     # 九宫格（仓输入法）
+    - schema: double_pinyin          # 自然码双拼
+    - schema: double_pinyin_abc      # 智能 ABC 双拼
+    - schema: double_pinyin_mspy     # 微软双拼
+    - schema: double_pinyin_sogou    # 搜狗双拼
+    - schema: double_pinyin_flypy    # 小鹤双拼
+    - schema: double_pinyin_ziguang  # 紫光双拼
+    - schema: double_pinyin_jiajia   # 拼音加加双拼
