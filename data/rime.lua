@@ -214,12 +214,15 @@ local function load_tools_config()
     return nil
 end
 
-local function build_request_body(system_prompt, user_prompt, temperature, max_tokens)
+-- enable_tools 仅在「第二次 Command 回答问题」时为 true
+local function build_request_body(system_prompt, user_prompt, temperature, max_tokens, enable_tools)
     if is_grok_provider() then
-        local tools_json = load_tools_config()
         local tools_part = ""
-        if tools_json and tools_json ~= "" then
-            tools_part = string.format(', "tools": %s', tools_json)
+        if enable_tools then
+            local tools_json = load_tools_config()
+            if tools_json and tools_json ~= "" then
+                tools_part = string.format(', "tools": %s', tools_json)
+            end
         end
         return string.format([[{
             "model": "%s",
@@ -342,10 +345,17 @@ local function parse_json_response(json_str)
     -- 记录原始响应用于调试
     debug_log("Parsing JSON, length: " .. #json_str)
 
-    -- Grok v1/responses: 优先解析 output_text / content 数组
+    -- Grok /responses: 优先解析 output_text / content 数组
     local outputs = {}
+    -- 情形 1：{"type":"output_text","text":"..."}
     for text in json_str:gmatch('"type"%s*:%s*"output_text"%s*,%s*"text"%s*:%s*"(.-)"') do
         table.insert(outputs, text)
+    end
+    -- 情形 2：{"text":"...","type":"output_text"}
+    if #outputs == 0 then
+        for text in json_str:gmatch('"text"%s*:%s*"(.-)"%s*,%s*"type"%s*:%s*"output_text"') do
+            table.insert(outputs, text)
+        end
     end
     if #outputs == 0 then
         local output_section = json_str:match('"output_text"%s*:%s*%[(.-)%]')
@@ -453,7 +463,7 @@ local function generate_question(pinyin, raw_candidates)
         candidates_text
     )
 
-    local request_body = build_request_body(system_prompt, user_prompt, 0.1, 300)
+    local request_body = build_request_body(system_prompt, user_prompt, 0.1, 300, false)
 
     local headers = {
         ["Content-Type"] = "application/json",
@@ -515,6 +525,7 @@ local function answer_question(question)
 4. 实用性：优先给出对用户有帮助、可执行或可直接使用的内容，而不是空泛评论。
 5. 直接可用：当文本中包含“网址/链接/官网/标题/名称/题目”等含义时，你的回答应直接给出对应的内容本身（例如 `www.example.com` 或一个标题字符串），而不是形如“XXX 的网址是：……”“标题是：……”这样的句子。
 6. 语气克制：禁止输出诸如“好的，下面是……”“当然可以”“没问题”“希望对你有帮助”“作为一个 AI 助手”等多余的客套话或自我说明。
+7. 内部判断：你可以在思考过程中判断这是什么「意图类型」，但不要在输出中写出诸如“这是一个问题意图”“用户想知道……”之类的分析语句。
 
 输出格式：
 - 返回一个连续的中文或混合文本段落（通常 1–2 句话，或在合适时仅返回一个词语/短语/标题/网址本身）。
@@ -526,7 +537,7 @@ local function answer_question(question)
         question
     )
 
-    local request_body = build_request_body(system_prompt, user_prompt, 0.3, 500)
+    local request_body = build_request_body(system_prompt, user_prompt, 0.3, 500, true)
 
     local headers = {
         ["Content-Type"] = "application/json",
@@ -549,6 +560,24 @@ local function answer_question(question)
 
     -- 清理回答内容，去除多余的空白和换行
     content = content:gsub("^%s*", ""):gsub("%s*$", "")
+
+    -- 尝试去掉明显的「意图说明」行，比如“这是一个问题意图。”
+    local cleaned_lines = {}
+    for line in content:gmatch("[^\n]+") do
+        local trimmed = line:gsub("^%s*", ""):gsub("%s*$", "")
+        local lower = trimmed
+        -- 过滤典型的 meta 说明句
+        local is_meta =
+            trimmed == "" or
+            trimmed:find("意图", 1, true) ~= nil or
+            trimmed:match("^这是一?个.+[意类]图[。？！?!]?$")
+        if not is_meta then
+            table.insert(cleaned_lines, trimmed)
+        end
+    end
+    if #cleaned_lines > 0 then
+        content = table.concat(cleaned_lines, "\n")
+    end
 
     -- 不再强制要求包含中文，允许纯网址、标题等 ASCII 内容
     if content == "" then
@@ -630,7 +659,7 @@ local function call_ai_api(current_pinyin, history_context, raw_candidates)
     end
 
     -- 构建请求体
-    local request_body = build_request_body(ai_config.system_prompt, user_prompt, 0.2, ai_config.max_tokens or 200)
+    local request_body = build_request_body(ai_config.system_prompt, user_prompt, 0.2, ai_config.max_tokens or 200, false)
 
     debug_log("Request body: " .. request_body)
 

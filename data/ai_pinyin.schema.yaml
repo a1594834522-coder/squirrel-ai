@@ -15,6 +15,7 @@ schema:
     按 Tab 键触发 AI 补全
   dependencies:
     - rime_ice
+    - melt_eng
 
 switches:
   - name: ascii_mode
@@ -94,14 +95,14 @@ melt_eng:
   dictionary: melt_eng     # 挂载词库 melt_eng.dict.yaml
   enable_sentence: false   # 禁止造句
   enable_user_dict: false  # 禁用用户词典
-  initial_quality: 0.4     # 初始权重（显著低于中文，让中文优先）
+  initial_quality: 0.2     # 降低英文初始权重，让中文候选优先
   comment_format:          # 自定义提示码
     - xform/.*//           # 清空提示码
 
 # 降低部分英语单词在候选项的位置（配置与 rime_ice 保持一致）
 reduce_english_filter:
   mode: all     # all | custom | none，使用内置短词集并合并 words
-  idx: 4        # 降低到第 idx 个位置（至少前 3 位优先给中文）
+  idx: 5        # 降低到第 idx 个位置（至少前 4 位优先给中文，短英文更靠后）
   words: [
     aid, ann,
     bail, bait, bam, band, bans, bat, bay, bend, bent, benz, bib, bid, bien, biz, boc, bop, bos, bud, buf, bus, bach, bench, bush,

@@ -99,6 +99,8 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
 
   private var aiConfigWindow: NSWindow?
   private var aiConfigFields: [String: Any]?
+  private let memorylakeBaseURL = "http://117.50.226.120:3002/v1/responses"
+  private let responsesModelOptions = ["xai/grok-4-fast-non-reasoning", "xai/grok-4", "gpt-4o"]
 
   func openAIConfig() {
     ensureEditMenuAvailable()
@@ -137,6 +139,10 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     let defaultOpenAIModel = "gpt-4o-mini"
     let grokModel = "grok-4-fast"
     var currentModel = defaults.string(forKey: "AIModelName") ?? defaultOpenAIModel
+    let toolsEnabledByDefault: Bool = {
+      let lower = currentToolsConfig.lowercased()
+      return lower.contains("web_search")
+    }()
 
     if FileManager.default.fileExists(atPath: configPath.path) {
       if let content = try? String(contentsOf: configPath) {
@@ -174,14 +180,15 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
       currentBaseURL = normalizedChatCompletionsURL(from: currentBaseURL)
     }
 
+    let isMemorylakePreset = isMemorylakeProvider(baseURL: currentBaseURL, model: currentModel)
     let isGeminiPreset = isGeminiProvider(baseURL: currentBaseURL, model: currentModel)
-    let isGrokPreset = !isGeminiPreset && isGrokProvider(baseURL: currentBaseURL, model: currentModel)
+    let isGrokPreset = !isGeminiPreset && isGrokProvider(baseURL: currentBaseURL, model: currentModel) && !isMemorylakePreset
 
     // 创建标签和输入框
-    let yStart: CGFloat = 360
+    let yStart: CGFloat = 370
     let labelWidth: CGFloat = 120
-    let fieldWidth: CGFloat = 340
-    let rowHeight: CGFloat = 70
+    let fieldWidth: CGFloat = 230
+    let rowHeight: CGFloat = 68
 
     // Provider Preset
     let providerLabel = NSTextField(labelWithString: "配置预设:")
@@ -189,14 +196,16 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     providerLabel.alignment = .right
     contentView.addSubview(providerLabel)
 
-    let providerPopup = NSPopUpButton(frame: NSRect(x: 150, y: yStart - 5, width: fieldWidth, height: 24))
-    providerPopup.addItems(withTitles: ["OpenAI 旧格式", "OpenAI /responses 格式", "Googleapis 格式"])
-    if isGrokPreset {
-      providerPopup.selectItem(at: 1)
-    } else if isGeminiPreset {
-      providerPopup.selectItem(at: 2)
-    } else {
+    let providerPopup = NSPopUpButton(frame: NSRect(x: 150, y: yStart - 5, width: fieldWidth + 90, height: 24))
+    providerPopup.addItems(withTitles: ["Memorylake 模板", "OpenAI 旧格式", "OpenAI /responses 格式", "Googleapis 格式"])
+    if isMemorylakePreset {
       providerPopup.selectItem(at: 0)
+    } else if isGrokPreset {
+      providerPopup.selectItem(at: 2)
+    } else if isGeminiPreset {
+      providerPopup.selectItem(at: 3)
+    } else {
+      providerPopup.selectItem(at: 1)
     }
     providerPopup.target = self
     providerPopup.action = #selector(providerChanged(_:))
@@ -212,7 +221,11 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     baseURLField.frame = NSRect(x: 150, y: yStart - rowHeight - 5, width: fieldWidth, height: 24)
     baseURLField.isSelectable = true
     baseURLField.isEditable = true
-    if isGeminiPreset {
+    if isMemorylakePreset {
+      baseURLField.stringValue = memorylakeBaseURL
+      baseURLField.placeholderString = memorylakeBaseURL
+      baseURLField.isEnabled = false
+    } else if isGeminiPreset {
       baseURLField.placeholderString = geminiURL
     } else if isGrokPreset {
       baseURLField.placeholderString = grokURL
@@ -248,41 +261,41 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     contentView.addSubview(modelLabel)
 
     let modelField = NSTextField(string: currentModel)
-    modelField.frame = NSRect(x: 150, y: yStart - rowHeight * 3 - 5, width: fieldWidth, height: 24)
+    modelField.frame = NSRect(x: 150, y: yStart - rowHeight * 3 - 5, width: fieldWidth - 20, height: 24)
     modelField.isSelectable = true
     modelField.isEditable = true
-    if isGeminiPreset {
-      modelField.placeholderString = geminiModel
-    } else if isGrokPreset {
-      modelField.placeholderString = grokModel
+    modelField.placeholderString = isGeminiPreset ? geminiModel : (isGrokPreset ? grokModel : defaultOpenAIModel)
+    let modelPopup = NSPopUpButton(frame: NSRect(x: 150 + fieldWidth - 10, y: yStart - rowHeight * 3 - 6, width: 130, height: 26))
+    modelPopup.addItems(withTitles: responsesModelOptions + ["自定义"])
+    modelPopup.target = self
+    modelPopup.action = #selector(modelOptionChanged(_:))
+    modelPopup.isHidden = !(isMemorylakePreset || isGrokPreset)
+    let modelMatchesPresetOption = responsesModelOptions.firstIndex(where: { $0.caseInsensitiveCompare(currentModel) == .orderedSame })
+    if let idx = modelMatchesPresetOption {
+      modelPopup.selectItem(at: idx)
+      modelField.stringValue = responsesModelOptions[idx]
+      modelField.isEditable = false
     } else {
-      modelField.placeholderString = defaultOpenAIModel
+      modelPopup.selectItem(withTitle: "自定义")
+      modelField.isEditable = !(isMemorylakePreset || isGrokPreset)
     }
     contentView.addSubview(modelField)
+    contentView.addSubview(modelPopup)
 
     // Tools 配置（仅 /responses 模板）
     let toolsLabel = NSTextField(labelWithString: "Tools 配置:")
-    toolsLabel.frame = NSRect(x: 20, y: 125, width: labelWidth, height: 20)
+    toolsLabel.frame = NSRect(x: 20, y: 110, width: labelWidth, height: 20)
     toolsLabel.alignment = .right
     contentView.addSubview(toolsLabel)
 
-    let toolsScrollView = NSScrollView(frame: NSRect(x: 150, y: 80, width: fieldWidth, height: 40))
-    toolsScrollView.hasVerticalScroller = true
-    toolsScrollView.borderType = .bezelBorder
-    let toolsTextView = NSTextView(frame: NSRect(x: 0, y: 0, width: fieldWidth, height: 40))
-    toolsTextView.isVerticallyResizable = true
-    toolsTextView.isHorizontallyResizable = false
-    toolsTextView.autoresizingMask = [.width]
-    toolsTextView.textContainer?.containerSize = NSSize(width: fieldWidth, height: .greatestFiniteMagnitude)
-    toolsTextView.textContainer?.widthTracksTextView = true
-    toolsTextView.string = currentToolsConfig
-    toolsTextView.font = NSFont.monospacedSystemFont(ofSize: NSFont.systemFontSize(for: .small), weight: .regular)
-    toolsScrollView.documentView = toolsTextView
-    contentView.addSubview(toolsScrollView)
+    let toolsCheckbox = NSButton(checkboxWithTitle: "启用 Web Search（仅第二次 Command 生效）", target: nil, action: nil)
+    toolsCheckbox.frame = NSRect(x: 150, y: 106, width: fieldWidth + 100, height: 24)
+    toolsCheckbox.state = toolsEnabledByDefault ? .on : .off
+    contentView.addSubview(toolsCheckbox)
 
-    let initialShowTools = isGrokPreset
+    let initialShowTools = isGrokPreset || isMemorylakePreset
     toolsLabel.isHidden = !initialShowTools
-    toolsScrollView.isHidden = !initialShowTools
+    toolsCheckbox.isHidden = !initialShowTools
 
     // 状态标签
     let statusLabel = NSTextField(labelWithString: "")
@@ -325,8 +338,9 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
       "baseURL": baseURLField,
       "apiKey": apiKeyField,
       "model": modelField,
-       "toolsLabel": toolsLabel,
-       "toolsTextView": toolsTextView,
+      "modelPopup": modelPopup,
+      "toolsLabel": toolsLabel,
+      "toolsCheckbox": toolsCheckbox,
       "status": statusLabel,
       "saveButton": saveButton,
       "testButton": testButton
@@ -376,6 +390,12 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     rawValue.trimmingCharacters(in: .whitespacesAndNewlines)
   }
 
+  private func isMemorylakeProvider(baseURL: String, model: String) -> Bool {
+    let lowerBase = baseURL.lowercased()
+    let lowerModel = model.lowercased()
+    return lowerBase.contains("117.50.226.120:3002") || lowerBase == memorylakeBaseURL.lowercased() || lowerModel.contains("memorylake")
+  }
+
   private func geminiEndpoint(for model: String) -> String {
     let trimmedModel = model.trimmingCharacters(in: .whitespacesAndNewlines)
     let resolvedModel = trimmedModel.isEmpty ? "gemini-2.5-flash" : trimmedModel
@@ -410,8 +430,8 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     }
 
     let toolsLabel = fields["toolsLabel"] as? NSView
-    let toolsTextView = fields["toolsTextView"] as? NSTextView
-    let toolsScrollView = toolsTextView?.enclosingScrollView
+    let toolsCheckbox = fields["toolsCheckbox"] as? NSButton
+    let modelPopup = fields["modelPopup"] as? NSPopUpButton
 
     let defaultOpenAIURL = "https://api.openai.com/v1/chat/completions"
     let grokURL = "https://api.x.ai/v1/responses"
@@ -426,7 +446,47 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     let isGrokBase = lowerBaseValue.contains("api.x.ai") || lowerBaseValue.contains("/responses")
 
     switch sender.indexOfSelectedItem {
+    case 0:
+      baseURLField.stringValue = memorylakeBaseURL
+      baseURLField.placeholderString = memorylakeBaseURL
+      baseURLField.isEnabled = false
+      apiKeyField.placeholderString = "Bearer ..."
+      if trimmedModelValue.isEmpty || !responsesModelOptions.contains(where: { $0.caseInsensitiveCompare(trimmedModelValue) == .orderedSame }) {
+        modelField.stringValue = responsesModelOptions.first ?? grokModel
+      }
+      modelField.placeholderString = responsesModelOptions.first ?? grokModel
+      modelPopup?.isHidden = false
+      selectModelPopup(using: modelPopup, with: modelField.stringValue)
+      syncModelField(with: modelPopup, field: modelField)
     case 2:
+      baseURLField.isEnabled = true
+      if trimmedBaseValue.isEmpty || trimmedBaseValue == defaultOpenAIURL || isGeminiBase || isLegacyGrokBase {
+        baseURLField.stringValue = grokURL
+      }
+      if modelField.stringValue.isEmpty || modelField.stringValue == defaultOpenAIModel || modelField.stringValue == geminiModel {
+        modelField.stringValue = grokModel
+      }
+      baseURLField.placeholderString = grokURL
+      apiKeyField.placeholderString = "xai-..."
+      modelField.placeholderString = grokModel
+      modelPopup?.isHidden = false
+      selectModelPopup(using: modelPopup, with: modelField.stringValue)
+      syncModelField(with: modelPopup, field: modelField)
+    case 1:
+      baseURLField.isEnabled = true
+      if trimmedBaseValue.isEmpty || isGeminiBase || isGrokBase {
+        baseURLField.stringValue = defaultOpenAIURL
+      }
+      if modelField.stringValue.isEmpty || modelField.stringValue == geminiModel || modelField.stringValue == grokModel {
+        modelField.stringValue = defaultOpenAIModel
+      }
+      baseURLField.placeholderString = defaultOpenAIURL
+      apiKeyField.placeholderString = "sk-..."
+      modelField.placeholderString = defaultOpenAIModel
+      modelField.isEditable = true
+      modelPopup?.isHidden = true
+    default:
+      baseURLField.isEnabled = true
       let resolvedModel: String
       if trimmedModelValue.isEmpty || trimmedModelValue == defaultOpenAIModel || trimmedModelValue == grokModel {
         resolvedModel = geminiModel
@@ -445,31 +505,45 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
       baseURLField.placeholderString = suggestedGeminiURL
       apiKeyField.placeholderString = "AIza..."
       modelField.placeholderString = geminiModel
-    case 1:
-      if trimmedBaseValue.isEmpty || trimmedBaseValue == defaultOpenAIURL || isGeminiBase || isLegacyGrokBase {
-        baseURLField.stringValue = grokURL
-      }
-      if modelField.stringValue.isEmpty || modelField.stringValue == defaultOpenAIModel || modelField.stringValue == geminiModel {
-        modelField.stringValue = grokModel
-      }
-      baseURLField.placeholderString = grokURL
-      apiKeyField.placeholderString = "xai-..."
-      modelField.placeholderString = grokModel
-    default:
-      if trimmedBaseValue.isEmpty || isGeminiBase || isGrokBase {
-        baseURLField.stringValue = defaultOpenAIURL
-      }
-      if modelField.stringValue.isEmpty || modelField.stringValue == geminiModel || modelField.stringValue == grokModel {
-        modelField.stringValue = defaultOpenAIModel
-      }
-      baseURLField.placeholderString = defaultOpenAIURL
-      apiKeyField.placeholderString = "sk-..."
-      modelField.placeholderString = defaultOpenAIModel
+      modelPopup?.isHidden = true
+      modelField.isEditable = true
     }
 
-    let shouldShowTools = sender.indexOfSelectedItem == 1
+    let shouldShowTools = sender.indexOfSelectedItem == 2 || sender.indexOfSelectedItem == 0
     toolsLabel?.isHidden = !shouldShowTools
-    toolsScrollView?.isHidden = !shouldShowTools
+    toolsCheckbox?.isHidden = !shouldShowTools
+  }
+
+  @objc private func modelOptionChanged(_ sender: NSPopUpButton) {
+    guard let fields = aiConfigFields,
+          let modelField = fields["model"] as? NSTextField else {
+      return
+    }
+    syncModelField(with: sender, field: modelField)
+  }
+
+  private func selectModelPopup(using popup: NSPopUpButton?, with value: String) {
+    guard let popup else { return }
+    if let idx = responsesModelOptions.firstIndex(where: { $0.caseInsensitiveCompare(value) == .orderedSame }) {
+      popup.selectItem(at: idx)
+    } else {
+      popup.selectItem(withTitle: "自定义")
+    }
+  }
+
+  private func syncModelField(with popup: NSPopUpButton?, field: NSTextField) {
+    guard let popup, !popup.isHidden else {
+      field.isEditable = true
+      field.isSelectable = true
+      return
+    }
+    let title = popup.titleOfSelectedItem ?? ""
+    if responsesModelOptions.contains(where: { $0.caseInsensitiveCompare(title) == .orderedSame }) {
+      field.stringValue = title
+      field.isEditable = false
+    } else {
+      field.isEditable = true
+    }
   }
 
   @objc private func saveAIConfig(_ sender: NSButton) {
@@ -481,14 +555,13 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
       return
     }
 
-    let toolsTextView = fields["toolsTextView"] as? NSTextView
+    let toolsCheckbox = fields["toolsCheckbox"] as? NSButton
     let providerPopup = fields["provider"] as? NSPopUpButton
+    let modelPopup = fields["modelPopup"] as? NSPopUpButton
 
     let baseURL = baseURLField.stringValue.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     let apiKey = apiKeyField.stringValue.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     let model = modelField.stringValue.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-    let rawToolsConfig = toolsTextView?.string ?? ""
-    let toolsConfig = rawToolsConfig.trimmingCharacters(in: .whitespacesAndNewlines)
     let defaults = UserDefaults.standard
 
     // 验证输入
@@ -499,9 +572,14 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     }
 
     let isGemini = isGeminiProvider(baseURL: baseURL, model: model)
-    let isGrok = !isGemini && isGrokProvider(baseURL: baseURL, model: model)
+    let isMemorylake = !isGemini && isMemorylakeProvider(baseURL: baseURL, model: model)
+    let isGrok = !isGemini && !isMemorylake && isGrokProvider(baseURL: baseURL, model: model)
+    let isResponsesPreset = providerPopup?.indexOfSelectedItem == 2 || providerPopup?.indexOfSelectedItem == 0 || isGrok || isMemorylake
     let normalizedBaseURL: String
-    if isGemini {
+    if isMemorylake {
+      normalizedBaseURL = memorylakeBaseURL
+      baseURLField.stringValue = memorylakeBaseURL
+    } else if isGemini {
       normalizedBaseURL = ensureGeminiBaseURL(baseURL, model: model)
     } else if isGrok {
       normalizedBaseURL = normalizedGrokResponsesURL(from: baseURL)
@@ -509,8 +587,6 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
       normalizedBaseURL = normalizedChatCompletionsURL(from: baseURL)
     }
     baseURLField.stringValue = normalizedBaseURL
-
-    let isResponsesPreset = providerPopup?.indexOfSelectedItem == 1
 
     // 生成配置文件
     let configContent = """
@@ -540,6 +616,8 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
 
     let configPath = SquirrelApp.userDir.appending(component: "ai_pinyin.custom.yaml")
     let toolsPath = SquirrelApp.userDir.appending(component: "ai_pinyin.tools.json")
+    let shouldEnableTools = (toolsCheckbox?.state == .on) && isResponsesPreset
+    let toolsConfig = shouldEnableTools ? "[{\"type\":\"web_search\"}]" : ""
 
     do {
       try configContent.write(to: configPath, atomically: true, encoding: String.Encoding.utf8)
@@ -547,17 +625,13 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
       defaults.set(normalizedBaseURL, forKey: "AIBaseURL")
       defaults.set(apiKey, forKey: "AIApiKey")
       defaults.set(model, forKey: "AIModelName")
+      if let modelPopup = modelPopup, !modelPopup.isHidden {
+        defaults.set(modelPopup.indexOfSelectedItem, forKey: "AIModelPresetIndex")
+      }
 
-      if isResponsesPreset {
-        if toolsConfig.isEmpty {
-          if FileManager.default.fileExists(atPath: toolsPath.path) {
-            try? FileManager.default.removeItem(at: toolsPath)
-          }
-          defaults.removeObject(forKey: "AIToolsConfig")
-        } else {
-          try toolsConfig.write(to: toolsPath, atomically: true, encoding: .utf8)
-          defaults.set(toolsConfig, forKey: "AIToolsConfig")
-        }
+      if isResponsesPreset && shouldEnableTools {
+        try toolsConfig.write(to: toolsPath, atomically: true, encoding: .utf8)
+        defaults.set(toolsConfig, forKey: "AIToolsConfig")
       } else {
         if FileManager.default.fileExists(atPath: toolsPath.path) {
           try? FileManager.default.removeItem(at: toolsPath)
@@ -589,6 +663,8 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
       return
     }
 
+    let toolsCheckbox = fields["toolsCheckbox"] as? NSButton
+    let providerPopup = fields["provider"] as? NSPopUpButton
     let baseURL = baseURLField.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
     let apiKey = apiKeyField.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
     let model = modelField.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -600,9 +676,15 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     }
 
     let isGemini = isGeminiProvider(baseURL: baseURL, model: model)
-    let isGrok = !isGemini && isGrokProvider(baseURL: baseURL, model: model)
+    let isMemorylake = !isGemini && isMemorylakeProvider(baseURL: baseURL, model: model)
+    let isGrok = !isGemini && !isMemorylake && isGrokProvider(baseURL: baseURL, model: model)
+    let isResponsesLike = isGrok || isMemorylake || providerPopup?.indexOfSelectedItem == 2 || providerPopup?.indexOfSelectedItem == 0
+    let shouldSendTools = isResponsesLike && (toolsCheckbox?.state == .on)
     let normalizedBaseURL: String
-    if isGemini {
+    if isMemorylake {
+      normalizedBaseURL = memorylakeBaseURL
+      baseURLField.stringValue = memorylakeBaseURL
+    } else if isGemini {
       normalizedBaseURL = ensureGeminiBaseURL(baseURL, model: model)
     } else if isGrok {
       normalizedBaseURL = normalizedGrokResponsesURL(from: baseURL)
@@ -637,19 +719,22 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
           "maxOutputTokens": 64
         ]
       ]
-    } else if isGrok {
-      payload = [
+    } else if isResponsesLike {
+      var responsesPayload: [String: Any] = [
         "model": model,
         "input": [
           [
             "role": "user",
             "content": "ping"
           ]
-        ],
-        "tools": [
-          ["type": "web_search"]
         ]
       ]
+      if shouldSendTools {
+        responsesPayload["tools"] = [
+          ["type": "web_search"]
+        ]
+      }
+      payload = responsesPayload
     } else {
       payload = [
         "model": model,
@@ -728,7 +813,7 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
                 }
               }
             }
-          } else if isGrok {
+          } else if isResponsesLike {
             if let outputs = json["output_text"] as? [String] {
               hasChoices = !outputs.isEmpty
               if let first = outputs.first {
