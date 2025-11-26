@@ -1,4 +1,5 @@
 # CLAUDE.md
+你所有的代码都会由另一个人工智能代理进行审查。不允许使用快捷方式、简化代码、占位符和回退方案。这样做是在浪费时间，因为另一个人工智能代理会进行审查，你最终还得重写。
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 

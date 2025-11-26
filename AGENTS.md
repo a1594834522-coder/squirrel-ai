@@ -1,5 +1,5 @@
 # Repository Guidelines
-用中文回答我的问题
+你所有的代码都会由另一个人工智能代理进行审查。不允许使用快捷方式、简化代码、占位符和回退方案。这样做是在浪费时间，因为另一个人工智能代理会进行审查，你最终还得重写。
 ## Project Structure & Module Organization
 `sources/` hosts the Swift app logic, with UI assets under `Assets.xcassets` and shared resources in `resources/`. Vendor engines and data live in `librime/`, `plum/`, and their generated outputs (`lib/`, `bin/`, `data/`). Packaging logic, Sparkle bits, and installer scripts are contained in `package/`, while helper automation sits inside `scripts/` and `action-*.sh`. Keep experimental output inside `build/` only.
 
@@ -120,3 +120,39 @@ Configure `ARCHS` or `MACOSX_DEPLOYMENT_TARGET` when targeting additional Macs, 
   - `~/Library/Rime/default.custom.yaml` 与 `~/Library/Rime/build/default.yaml`  
   - 以及（若启用日志）`~/Library/Rime/ai_debug.log` 是否有期望的记录。  
 - 通过这些结果可以尽早发现 schema 是否被自动 patch，Lua 处理器是否挂上，而不是等到按键无反应才回头排查。  
+
+7）调试日志路径与崩溃排查  
+- Rime 主日志采用按进程滚动的临时文件，路径形如：  
+  `/private/var/folders/.../T/rime.squirrel/rime.squirrel.{INFO,WARNING,ERROR}`  
+- 当出现「候选框完全消失」「工程无法编译」这类致命问题时，优先查看：  
+  - `rime.squirrel.ERROR` 中的 `invalid metadata.`、Lua 相关错误；  
+  - `rime.squirrel.WARNING` 中的缺失配置（如 `installation.yaml`、`build/squirrel.yaml`）。  
+- 不要只看 `~/Library/Rime/ai_debug.log`，那只是 AI 插件自己的调试输出，无法反映整个输入法是否崩溃。  
+
+8）本次事故教训（禁止重复犯错）  
+- **不要让工具调用参数混入工程文件名**：  
+  - 这次错误是把 `timeout_ms:10000` 之类的 CLI 参数意外拼进了 `bash package/add_data_files` 的输出，结果 `project.pbxproj` 被写入了 `ai_pinyin.schema.yaml,timeout_ms:10000,` 这样的伪文件名。  
+  - Xcode 随后报 `CFPropertyListCreateFromXMLData(): missing semicolon`，整个 `Squirrel.xcodeproj` 被认为“损坏”，导致 `make release` 失败。  
+  - 以后在任何脚本、命令里，只允许 `package/add_data_files` 看到纯净的文件名，不得把额外参数、日志片段拼接到文件列表中。工程文件一旦被脚本修改，必须用 `rg "timeout_ms" Squirrel.xcodeproj/project.pbxproj` 这类命令自查是否混入了垃圾字符串。  
+- **不要在 Lua processor 里接管基础提交逻辑**：  
+  - `ai_history_processor` 只负责“观察按键 + 写入历史”，不能调用 `context:clear()`、`engine:commit_text()`，也不能返回 `kAccepted` 阻断默认提交。  
+  - 这次曾尝试在其中直接提交 AI 候选，结果把普通拼音 → 汉字的提交链路也截断了，表现为“整个输入法打不出字”。  
+  - 凡是涉及 `space` / `Return` / 数字键 1–9 的逻辑，必须保持「只记录、不干预」，所有真正的上屏都交给 Rime 自己或通过 translator 生成的候选来完成。  
+
+9）修改顺序与回滚策略  
+- 任何大改之前先在当前仓库里保存一份远程基线文件：  
+  - `git show origin/master:data/rime.lua > /tmp/rime.lua.orig`  
+  - `git show origin/master:data/ai_pinyin.schema.yaml > /tmp/ai_pinyin.schema.yaml.orig`  
+- 一旦发现「基础输入功能异常」或 `xcodebuild` 报工程解析错误，先用这两份基线原样覆盖 `data/` 与 `data/plum/` 再重装：  
+  - `cp /tmp/rime.lua.orig data/rime.lua && cp /tmp/rime.lua.orig data/plum/rime.lua`  
+  - `cp /tmp/ai_pinyin.schema.yaml.orig data/ai_pinyin.schema.yaml && cp /tmp/ai_pinyin.schema.yaml.orig data/plum/ai_pinyin.schema.yaml`  
+- 确认基础拼音 → 汉字完全恢复后，再小步地重新注入 AI 相关改动，避免在「基础功能不稳」的状态下继续叠加复杂逻辑。  
+
+10）原则：AI 功能绝不能牺牲基础输入法稳定性  
+- 一旦 AI 相关改动让候选框消失、基础拼音不上屏或工程无法构建，优先回滚到最近一次“纯粹可用”的基线，然后重新设计实现方式。  
+- 所有新功能（tools、prompt、两段 Command 状态机等）必须在「普通拼音、Tab、候选选择」完全无回归的前提下再考虑上线。  
+
+日志的位置是：`/private/var/folders/3m/s566g41j3_v40pk7dmxnj7bc0000gn/T/rime.squirrel`
+
+
+日志的位置是：/private/var/folders/3m/s566g41j3_v40pk7dmxnj7bc0000gn/T/rime.squirrel

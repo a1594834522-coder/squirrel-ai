@@ -20,6 +20,8 @@
 		441E637E22B7E96F006DCCDD /* stroke.schema.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E636B22B7E90D006DCCDD /* stroke.schema.yaml */; };
 		441E637F22B7E96F006DCCDD /* terra_pinyin.dict.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E636422B7E90C006DCCDD /* terra_pinyin.dict.yaml */; };
 		441E638022B7E96F006DCCDD /* terra_pinyin.schema.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E636522B7E90C006DCCDD /* terra_pinyin.schema.yaml */; };
+441E638122B7E96F006DCCDD /* ai_pinyin.schema.yaml,timeout_ms:10000, in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E638222B7E90C006DCCDD /* ai_pinyin.schema.yaml,timeout_ms:10000, */; };
+		441E638122B7E96F006DCCDD /* ai_pinyin.schema.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E638222B7E90C006DCCDD /* ai_pinyin.schema.yaml */; };
 441E638122B7E96F006DCCDD /* default.custom.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 5B5EED566C294D95A7B36ABD /* default.custom.yaml */; };
 441E6310922B7E96F006DCCDD /* weasel.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6311022B7E90C006DCCDD /* weasel.yaml */; };
 441E6310722B7E96F006DCCDD /* t9.schema.yaml in Copy Shared Support Files */ = {isa = PBXBuildFile; fileRef = 441E6310822B7E90C006DCCDD /* t9.schema.yaml */; };
@@ -236,6 +238,8 @@
 						441E637E22B7E96F006DCCDD /* stroke.schema.yaml in Copy Shared Support Files */,
 						441E637F22B7E96F006DCCDD /* terra_pinyin.dict.yaml in Copy Shared Support Files */,
 						441E638022B7E96F006DCCDD /* terra_pinyin.schema.yaml in Copy Shared Support Files */,
+441E638122B7E96F006DCCDD /* ai_pinyin.schema.yaml,timeout_ms:10000, in Copy Shared Support Files */,
+						441E638122B7E96F006DCCDD /* ai_pinyin.schema.yaml in Copy Shared Support Files */,
 						441E638122B7E96F006DCCDD /* default.custom.yaml in Copy Shared Support Files */,
 						441E6310922B7E96F006DCCDD /* weasel.yaml in Copy Shared Support Files */,
 						441E6310722B7E96F006DCCDD /* t9.schema.yaml in Copy Shared Support Files */,
@@ -346,8 +350,9 @@
 		2C6B9F9B2BCD086700E327DF /* librime-octagram.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "librime-octagram.dylib"; path = "lib/rime-plugins/librime-octagram.dylib"; sourceTree = "<group>"; };
 		2C6B9F9C2BCD086700E327DF /* librime-predict.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "librime-predict.dylib"; path = "lib/rime-plugins/librime-predict.dylib"; sourceTree = "<group>"; };
 		441E636322B7E90C006DCCDD /* cangjie5.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cangjie5.schema.yaml; path = data/plum/cangjie5.schema.yaml; sourceTree = "<group>"; };
-		441E636422B7E90C006DCCDD /* terra_pinyin.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = terra_pinyin.dict.yaml; path = data/plum/terra_pinyin.dict.yaml; sourceTree = "<group>"; };
-		441E636522B7E90C006DCCDD /* terra_pinyin.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = terra_pinyin.schema.yaml; path = data/plum/terra_pinyin.schema.yaml; sourceTree = "<group>"; };
+			441E636422B7E90C006DCCDD /* terra_pinyin.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = terra_pinyin.dict.yaml; path = data/plum/terra_pinyin.dict.yaml; sourceTree = "<group>"; };
+			441E636522B7E90C006DCCDD /* terra_pinyin.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = terra_pinyin.schema.yaml; path = data/plum/terra_pinyin.schema.yaml; sourceTree = "<group>"; };
+			441E638222B7E90C006DCCDD /* ai_pinyin.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = ai_pinyin.schema.yaml; path = data/plum/ai_pinyin.schema.yaml; sourceTree = "<group>"; };
 5B5EED566C294D95A7B36ABD /* default.custom.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = default.custom.yaml; path = data/plum/default.custom.yaml; sourceTree = "<group>"; };
 441E6311022B7E90C006DCCDD /* weasel.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = weasel.yaml; path = data/plum/weasel.yaml; sourceTree = "<group>"; };
 441E6310822B7E90C006DCCDD /* t9.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = t9.schema.yaml; path = data/plum/t9.schema.yaml; sourceTree = "<group>"; };
@@ -682,6 +687,8 @@ F336E7D6050D45448D38FBB8 /* terra_pinyin_12345.schema.yaml */ = {isa = PBXFileRe
 				441E636B22B7E90D006DCCDD /* stroke.schema.yaml */,
 				441E636422B7E90C006DCCDD /* terra_pinyin.dict.yaml */,
 				441E636522B7E90C006DCCDD /* terra_pinyin.schema.yaml */,
+441E638222B7E90C006DCCDD /* ai_pinyin.schema.yaml,timeout_ms:10000, */,
+441E638222B7E90C006DCCDD /* ai_pinyin.schema.yaml */,
 5B5EED566C294D95A7B36ABD /* default.custom.yaml */,
 441E6311022B7E90C006DCCDD /* weasel.yaml */,
 441E6310822B7E90C006DCCDD /* t9.schema.yaml */,
