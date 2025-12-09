@@ -155,4 +155,3 @@ Configure `ARCHS` or `MACOSX_DEPLOYMENT_TARGET` when targeting additional Macs, 
 日志的位置是：`/private/var/folders/3m/s566g41j3_v40pk7dmxnj7bc0000gn/T/rime.squirrel`
 
 
-日志的位置是：/private/var/folders/3m/s566g41j3_v40pk7dmxnj7bc0000gn/T/rime.squirrel

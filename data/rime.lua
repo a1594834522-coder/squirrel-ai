@@ -749,9 +749,9 @@ function ai_completion_processor(key, env)
     local input = context.input
 
     -- 处理 Command 键：两段式问答（先出题，再回答选中的题目）
-    -- macOS 的 Command 键被识别为 Super+Super_L 或 Super+Super_R
-    if key_repr == "Super+Super_L" or key_repr == "Super+Super_R" or
-       key_repr == "Super_L" or key_repr == "Super_R" then
+    -- macOS 的 Command 键在当前环境下按下事件表现为 Super+Super_L / Super+Super_R
+    -- 为避免一次物理按键被多种编码重复触发，这里只处理带 Super+ 前缀的按下事件
+    if key_repr == "Super+Super_L" or key_repr == "Super+Super_R" then
         if input and input ~= "" then
             debug_log("Command pressed with input: " .. input)
 
