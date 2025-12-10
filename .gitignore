@@ -22,6 +22,7 @@ package/*.xml
 # Local tooling and scratch artifacts
 .claude/
 build-old/
+build-test/
 *.jpg
 
 # Ad-hoc files created by AI tooling when HOME points to the repo

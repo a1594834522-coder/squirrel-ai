@@ -99,7 +99,8 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
 
   private var aiConfigWindow: NSWindow?
   private var aiConfigFields: [String: Any]?
-  private let memorylakeBaseURL = "http://117.50.226.120:3002/v1/responses"
+  // Memorylake 默认 Base URL（/responses 风格接口由服务端路由处理）
+  private let memorylakeBaseURL = "https://memorylake.data.cloud/"
   private let responsesModelOptions = [
     "xai/grok-4-fast-non-reasoning",
     "xai/grok-4",
@@ -241,6 +242,28 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     }
     contentView.addSubview(baseURLField)
 
+    // Memorylake 官网跳转链接（仅在 Memorylake 模板时显示）
+    let memorylakeLinkDisplayText = "memorylake.ai"
+    let memorylakeLinkURLString = "https://memorylake.ai/"
+    let memorylakeLinkLabel = NSTextField(labelWithString: "获取API Key：\(memorylakeLinkDisplayText)")
+    // 放在 Base URL 上方，避免遮挡输入框
+    memorylakeLinkLabel.frame = NSRect(x: 150, y: yStart - rowHeight + 30, width: fieldWidth + 180, height: 18)
+    memorylakeLinkLabel.alignment = .left
+    memorylakeLinkLabel.isHidden = !isMemorylakePreset
+    memorylakeLinkLabel.allowsEditingTextAttributes = true
+    memorylakeLinkLabel.isSelectable = true
+    let fullLinkString = "获取API Key：\(memorylakeLinkDisplayText)"
+    let linkAttr = NSMutableAttributedString(string: fullLinkString)
+    if let url = URL(string: memorylakeLinkURLString) {
+      let nsString = fullLinkString as NSString
+      let range = nsString.range(of: memorylakeLinkDisplayText)
+      if range.location != NSNotFound {
+        linkAttr.addAttribute(.link, value: url, range: range)
+      }
+    }
+    memorylakeLinkLabel.attributedStringValue = linkAttr
+    contentView.addSubview(memorylakeLinkLabel)
+
     // API Key
     let apiKeyLabel = NSTextField(labelWithString: "API Key:")
     apiKeyLabel.frame = NSRect(x: 20, y: yStart - rowHeight * 2, width: labelWidth, height: 20)
@@ -276,15 +299,16 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     modelPopup.addItems(withTitles: responsesModelOptions + ["自定义"])
     modelPopup.target = self
     modelPopup.action = #selector(modelOptionChanged(_:))
-    modelPopup.isHidden = !(isMemorylakePreset || isGrokPreset)
+    // 仅在 Memorylake 模板中展示右侧模型选择列表
+    modelPopup.isHidden = !isMemorylakePreset
     let modelMatchesPresetOption = responsesModelOptions.firstIndex(where: { $0.caseInsensitiveCompare(currentModel) == .orderedSame })
-    if let idx = modelMatchesPresetOption {
+    if isMemorylakePreset, let idx = modelMatchesPresetOption {
       modelPopup.selectItem(at: idx)
       modelField.stringValue = responsesModelOptions[idx]
       modelField.isEditable = false
     } else {
       modelPopup.selectItem(withTitle: "自定义")
-      modelField.isEditable = !(isMemorylakePreset || isGrokPreset)
+      modelField.isEditable = true
     }
     contentView.addSubview(modelField)
     contentView.addSubview(modelPopup)
@@ -350,8 +374,9 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
       "toolsCheckbox": toolsCheckbox,
       "status": statusLabel,
       "saveButton": saveButton,
-      "testButton": testButton
-    ] as [String : Any]
+      "testButton": testButton,
+      "memorylakeLink": memorylakeLinkLabel
+    ] as [String: Any]
 
     // 取消按钮处理
     cancelButton.target = self
@@ -400,7 +425,9 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
   private func isMemorylakeProvider(baseURL: String, model: String) -> Bool {
     let lowerBase = baseURL.lowercased()
     let lowerModel = model.lowercased()
-    return lowerBase.contains("117.50.226.120:3002") || lowerBase == memorylakeBaseURL.lowercased() || lowerModel.contains("memorylake")
+    return lowerBase.contains("memorylake.data.cloud") ||
+      lowerBase == memorylakeBaseURL.lowercased() ||
+      lowerModel.contains("memorylake")
   }
 
   private func geminiEndpoint(for model: String) -> String {
@@ -439,6 +466,7 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     let toolsLabel = fields["toolsLabel"] as? NSView
     let toolsCheckbox = fields["toolsCheckbox"] as? NSButton
     let modelPopup = fields["modelPopup"] as? NSPopUpButton
+    let memorylakeLink = fields["memorylakeLink"] as? NSView
 
     let defaultOpenAIURL = "https://api.openai.com/v1/chat/completions"
     let grokURL = "https://api.x.ai/v1/responses"
@@ -476,9 +504,9 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
       baseURLField.placeholderString = grokURL
       apiKeyField.placeholderString = "xai-..."
       modelField.placeholderString = grokModel
-      modelPopup?.isHidden = false
-      selectModelPopup(using: modelPopup, with: modelField.stringValue)
-      syncModelField(with: modelPopup, field: modelField)
+      // OpenAI /responses 模板不再展示右侧模型列表，仅 Memorylake 使用预设列表
+      modelPopup?.isHidden = true
+      modelField.isEditable = true
     case 1:
       baseURLField.isEnabled = true
       if trimmedBaseValue.isEmpty || isGeminiBase || isGrokBase {
@@ -519,6 +547,8 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
     let shouldShowTools = sender.indexOfSelectedItem == 2 || sender.indexOfSelectedItem == 0
     toolsLabel?.isHidden = !shouldShowTools
     toolsCheckbox?.isHidden = !shouldShowTools
+    let shouldShowMemorylakeLink = sender.indexOfSelectedItem == 0
+    memorylakeLink?.isHidden = !shouldShowMemorylakeLink
   }
 
   @objc private func modelOptionChanged(_ sender: NSPopUpButton) {

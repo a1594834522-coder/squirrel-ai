@@ -38,7 +38,7 @@
 
 - **Memorylake 模板与多模型支持**
   - 前端 AI 配置中内置「Memorylake 模板」：
-    - 固定 `base_url = http://117.50.226.120:3002/v1/responses`
+    - 固定 `base_url = https://memorylake.data.cloud/`
     - 提供可选模型下拉列表，而非手动输入：
       - `xai/grok-4-fast-non-reasoning`
       - `xai/grok-4`
@@ -88,7 +88,8 @@
 
 - **使用 Memorylake：**
   - Provider 选择为 Memorylake（或你在 UI 中看到的对应名称）。
-  - Base URL 自动填为 `http://117.50.226.120:3002/v1/responses`，无需手动修改。
+  - Base URL 自动填为 `https://memorylake.data.cloud/`，无需手动修改。
+  - Base URL 上方会显示「获取API Key：memorylake.ai」，点击其中的 `memorylake.ai` 会在浏览器中打开 <https://memorylake.ai/>。
   - 模型下拉框可选择：
     - `xai/grok-4-fast-non-reasoning`
     - `xai/grok-4`
@@ -109,7 +110,7 @@
   - 若配置正确，会收到简单的成功提示；
   - 若提示 App Transport Security（ATS）错误，需要确认：
     - 使用的是 `https`，或在本地建立了合规的 HTTP 例外；
-    - 对自建 HTTP 服务（如 Memorylake）应通过应用配置显式允许。
+    - 对自建 HTTP 服务应通过应用配置显式允许。
 
 ---
 
