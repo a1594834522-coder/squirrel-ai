@@ -100,7 +100,7 @@ final class SquirrelApplicationDelegate: NSObject, NSApplicationDelegate, SPUSta
   private var aiConfigWindow: NSWindow?
   private var aiConfigFields: [String: Any]?
   // Memorylake 默认 Base URL（/responses 风格接口由服务端路由处理）
-  private let memorylakeBaseURL = "https://memorylake.data.cloud/"
+  private let memorylakeBaseURL = "https://memorylake.data.cloud/v1/responses"
   private let responsesModelOptions = [
     "xai/grok-4-fast-non-reasoning",
     "xai/grok-4",
